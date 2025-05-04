@@ -45,4 +45,13 @@ pub mod pay_contracts {
     ) -> Result<()> {
         collections_borrower::handler(ctx, collections)
     }
+
+    pub fn borrow_appl(
+        ctx: Context<BorrowAppl>,
+        appl_id: String,
+        request_amount: u64,
+        metadata: String,
+    ) -> Result<()> {
+        borrow_appl::handler(ctx, appl_id, request_amount, metadata)
+    }
 }

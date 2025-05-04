@@ -37,3 +37,16 @@ pub struct StakingVault {
     pub epoch_start: i64,
     pub epoch_time: EpochTime,
 }
+
+#[account]
+#[derive(InitSpace)]
+pub struct BorrowAppl {
+    pub bump: u8,
+    #[max_len(100)]
+    pub appl_id: String,
+    pub borrower: Pubkey,
+    pub request_amount: u64,
+    pub approved_amount: u64,
+    #[max_len(100)]
+    pub metadata: String,
+}
