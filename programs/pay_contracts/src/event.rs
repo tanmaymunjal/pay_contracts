@@ -13,3 +13,8 @@ pub struct ContractEdited {
     pub lending_agent: Pubkey,
     pub fraud_agent: Pubkey,
 }
+
+#[event]
+pub struct BorrowerCreated {
+    pub borrower: Pubkey,
+}

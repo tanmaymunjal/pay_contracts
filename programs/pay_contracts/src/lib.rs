@@ -30,4 +30,8 @@ pub mod pay_contracts {
     ) -> Result<()> {
         edit_initialize::handler(ctx, card_provider, lending_agent, fraud_agent)
     }
+
+    pub fn create_borrower(ctx: Context<CreateBorrower>) -> Result<()> {
+        create_borrower::handler(ctx)
+    }
 }
