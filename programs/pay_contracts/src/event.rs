@@ -36,4 +36,5 @@ pub struct BorrowApplEvent {
     pub borrower: Pubkey,
     pub request_amount: u64,
     pub metadata: String,
+    pub appl_id: String,
 }

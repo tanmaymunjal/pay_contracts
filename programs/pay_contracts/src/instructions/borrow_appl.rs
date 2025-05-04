@@ -40,7 +40,7 @@ pub fn handler(
     let borrower_acc = &ctx.accounts.borrower_acc;
 
     borrow_appl.bump = ctx.bumps.borrow_appl;
-    borrow_appl.appl_id = appl_id;
+    borrow_appl.appl_id = appl_id.clone();
     borrow_appl.request_amount = request_amount;
     borrow_appl.approved_amount = 0;
     borrow_appl.metadata = metadata.clone();
@@ -48,7 +48,8 @@ pub fn handler(
     emit!(BorrowApplEvent {
         borrower: borrower_acc.key(),
         request_amount: request_amount,
-        metadata: metadata
+        metadata: metadata,
+        appl_id
     });
 
     Ok(())
