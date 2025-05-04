@@ -22,6 +22,12 @@ pub struct InitializeAccount {
 
 #[account]
 #[derive(InitSpace)]
+pub struct TreasuryAccount {
+    pub bump: u8,
+}
+
+#[account]
+#[derive(InitSpace)]
 pub struct Borrower {
     pub bump: u8,
     pub total_borrowed_amount: u64,

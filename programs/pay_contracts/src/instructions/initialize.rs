@@ -1,8 +1,13 @@
 use crate::constants::DICTATOR;
 use crate::error::PayContractsError;
 use crate::event::ContractInitialized;
-use crate::state::InitializeAccount;
+use crate::state::{InitializeAccount, TreasuryAccount};
 use anchor_lang::prelude::*;
+use anchor_spl::{
+    associated_token::AssociatedToken,
+    mint::USDC,
+    token_interface::{Mint, TokenAccount, TokenInterface},
+};
 
 #[derive(Accounts)]
 pub struct InitializeContract<'info> {
@@ -21,6 +26,28 @@ pub struct InitializeContract<'info> {
         bump
     )]
     pub initialize_acc: Account<'info, InitializeAccount>,
+    #[account(
+        init,
+        payer = initializer,
+        space = 8 + TreasuryAccount::INIT_SPACE,
+        seeds = [
+            b"treasury"
+        ],
+        bump
+    )]
+    pub treasury_acc: Account<'info, TreasuryAccount>,
+    #[account(
+        init,
+        payer = initializer,
+        associated_token::mint = usdc_mint,
+        associated_token::authority = treasury_acc,
+        token::token_program = token_program,
+    )]
+    pub treasury_token_account: InterfaceAccount<'info, TokenAccount>,
+    #[account(address=USDC)]
+    pub usdc_mint: InterfaceAccount<'info, Mint>,
+    pub token_program: Interface<'info, TokenInterface>,
+    pub associated_token_program: Program<'info, AssociatedToken>,
     pub system_program: Program<'info, System>,
 }
 
@@ -31,6 +58,9 @@ pub fn handler(
     fraud_agent: Pubkey,
 ) -> Result<()> {
     let initialize_acc = &mut ctx.accounts.initialize_acc;
+    let treasury_acc = &mut ctx.accounts.treasury_acc;
+
+    treasury_acc.bump = ctx.bumps.treasury_acc;
 
     initialize_acc.bump = ctx.bumps.initialize_acc;
     initialize_acc.card_provider = card_provider;

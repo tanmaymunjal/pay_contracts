@@ -47,7 +47,7 @@ pub mod pay_contracts {
     }
 
     pub fn borrow_appl(
-        ctx: Context<BorrowAppl>,
+        ctx: Context<BorrowApplContx>,
         appl_id: String,
         request_amount: u64,
         metadata: String,
