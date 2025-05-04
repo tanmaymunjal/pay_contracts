@@ -34,4 +34,8 @@ pub mod pay_contracts {
     pub fn create_borrower(ctx: Context<CreateBorrower>) -> Result<()> {
         create_borrower::handler(ctx)
     }
+
+    pub fn debarr_borrower(ctx: Context<DeBarrBorrower>, debarr: bool) -> Result<()>{
+        debarr_borrower::handler(ctx, debarr)
+    }
 }

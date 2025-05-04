@@ -18,3 +18,9 @@ pub struct ContractEdited {
 pub struct BorrowerCreated {
     pub borrower: Pubkey,
 }
+
+#[event]
+pub struct BorrowerDeBarred {
+    pub borrower: Pubkey,
+    pub debarred: bool
+}
