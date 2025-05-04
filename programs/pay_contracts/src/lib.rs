@@ -35,7 +35,14 @@ pub mod pay_contracts {
         create_borrower::handler(ctx)
     }
 
-    pub fn debarr_borrower(ctx: Context<DeBarrBorrower>, debarr: bool) -> Result<()>{
+    pub fn debarr_borrower(ctx: Context<DeBarrBorrower>, debarr: bool) -> Result<()> {
         debarr_borrower::handler(ctx, debarr)
+    }
+
+    pub fn collections_borrower(
+        ctx: Context<CollectionsBorrower>,
+        collections: bool,
+    ) -> Result<()> {
+        collections_borrower::handler(ctx, collections)
     }
 }

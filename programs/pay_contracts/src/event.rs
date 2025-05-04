@@ -22,5 +22,11 @@ pub struct BorrowerCreated {
 #[event]
 pub struct BorrowerDeBarred {
     pub borrower: Pubkey,
-    pub debarred: bool
+    pub debarred: bool,
+}
+
+#[event]
+pub struct CollectionsBorrowerEvent {
+    pub borrower: Pubkey,
+    pub collections: bool,
 }
