@@ -8,7 +8,7 @@ pub enum EpochTime {
     FourtyFiveDays,
     SixtyDays,
     SeventyFiveDays,
-    NinetyDays
+    NinetyDays,
 }
 
 #[account]
@@ -17,16 +17,16 @@ pub struct InitializeAccount {
     pub bump: u8,
     pub card_provider: Pubkey,
     pub lending_agent: Pubkey,
-    pub fraud_agent: Pubkey
+    pub fraud_agent: Pubkey,
 }
 
 #[account]
 #[derive(InitSpace)]
-pub struct Borrower{
+pub struct Borrower {
     pub bump: u8,
     pub total_borrowed_amount: u64,
     pub debarred: bool,
-    pub collections: bool
+    pub collections: bool,
 }
 
 #[account]
@@ -35,5 +35,5 @@ pub struct StakingVault {
     pub bump: u8,
     pub total_stake: u64,
     pub epoch_start: i64,
-    pub epoch_time: EpochTime
+    pub epoch_time: EpochTime,
 }
