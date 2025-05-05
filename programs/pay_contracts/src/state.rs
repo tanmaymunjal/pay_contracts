@@ -24,6 +24,17 @@ impl From<EpochTime> for u64 {
     }
 }
 
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, PartialEq, Eq, Debug, InitSpace)]
+pub struct PayMoneyInst {
+    pub epoch: EpochTime,
+    pub amount: u64,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq, Debug)]
+pub struct PayMoneyDist {
+    pub req: Vec<PayMoneyInst>,
+}
+
 #[account]
 #[derive(InitSpace)]
 pub struct InitializeAccount {
@@ -37,6 +48,7 @@ pub struct InitializeAccount {
 #[derive(InitSpace)]
 pub struct TreasuryAccount {
     pub bump: u8,
+    pub available_funds: u64,
 }
 
 #[account]

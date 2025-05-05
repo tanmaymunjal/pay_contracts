@@ -1,4 +1,4 @@
-use crate::state::EpochTime;
+use crate::state::{EpochTime, PayMoneyDist};
 use anchor_lang::prelude::*;
 
 #[event]
@@ -66,4 +66,10 @@ pub struct UnstakingEvenet {
     pub staking_vault: Pubkey,
     pub staked_amount: u64,
     pub unstaked_amount: u64,
+}
+
+#[event]
+pub struct MoneyUsed {
+    pub borrow_appl: Pubkey,
+    pub money_dist: PayMoneyDist,
 }

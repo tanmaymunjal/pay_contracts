@@ -17,4 +17,20 @@ pub enum PayContractsError {
     // 6003
     #[msg("Epoch has not ended yet")]
     EpochNotEnded,
+
+    // 6004
+    #[msg("Not enough approval")]
+    NotEnoughFundsApproved,
+
+    // 6005
+    #[msg("Insufficient funds in staking vault selected")]
+    InsufficientFunds,
+
+    // 6006
+    #[msg("Epoch not currently active")]
+    EpochNotActive,
+
+    // 6007
+    #[msg("Epoch not selected correctly/invalid input")]
+    InvalidEpochInput,
 }

@@ -72,6 +72,7 @@ pub fn handler(
     let staking_center = &mut ctx.accounts.staking_center;
 
     treasury_acc.bump = ctx.bumps.treasury_acc;
+    treasury_acc.available_funds = 0;
     staking_center.bump = ctx.bumps.staking_center;
 
     initialize_acc.bump = ctx.bumps.initialize_acc;

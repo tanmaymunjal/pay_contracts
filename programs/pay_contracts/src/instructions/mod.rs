@@ -6,6 +6,7 @@ pub mod create_staking_vault;
 pub mod debarr_borrower;
 pub mod edit_initialize;
 pub mod initialize;
+pub mod pay_money;
 pub mod stake_staking_vault;
 pub mod unstake_staking_vault;
 
@@ -17,5 +18,6 @@ pub use create_staking_vault::*;
 pub use debarr_borrower::*;
 pub use edit_initialize::*;
 pub use initialize::*;
+pub use pay_money::*;
 pub use stake_staking_vault::*;
 pub use unstake_staking_vault::*;
