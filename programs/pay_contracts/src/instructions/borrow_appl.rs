@@ -43,6 +43,7 @@ pub fn handler(
     borrow_appl.appl_id = appl_id.clone();
     borrow_appl.request_amount = request_amount;
     borrow_appl.approved_amount = 0;
+    borrow_appl.used_amount = 0;
     borrow_appl.metadata = metadata.clone();
 
     emit!(BorrowApplEvent {

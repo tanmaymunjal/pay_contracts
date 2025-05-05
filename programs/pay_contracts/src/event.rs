@@ -1,3 +1,4 @@
+use crate::state::EpochTime;
 use anchor_lang::prelude::*;
 
 #[event]
@@ -37,4 +38,17 @@ pub struct BorrowApplEvent {
     pub request_amount: u64,
     pub metadata: String,
     pub appl_id: String,
+}
+
+#[event]
+pub struct ApproveApl {
+    pub borrow_appl: Pubkey,
+    pub approval_amount: u64,
+}
+
+#[event]
+pub struct StakingVaultCreated {
+    pub staking_vault: Pubkey,
+    pub epoch_start: i64,
+    pub epoch_time: EpochTime,
 }

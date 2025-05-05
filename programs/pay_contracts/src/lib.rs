@@ -54,4 +54,12 @@ pub mod pay_contracts {
     ) -> Result<()> {
         borrow_appl::handler(ctx, appl_id, request_amount, metadata)
     }
+
+    pub fn create_staking_vault(
+        ctx: Context<CreateStakingVault>,
+        seed: String,
+        epoch_time: state::EpochTime,
+    ) -> Result<()> {
+        create_staking_vault::handler(ctx, seed, epoch_time)
+    }
 }

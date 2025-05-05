@@ -1,13 +1,17 @@
+pub mod approve_appl;
 pub mod borrow_appl;
 pub mod collections_borrower;
 pub mod create_borrower;
+pub mod create_staking_vault;
 pub mod debarr_borrower;
 pub mod edit_initialize;
 pub mod initialize;
 
+pub use approve_appl::*;
 pub use borrow_appl::*;
 pub use collections_borrower::*;
 pub use create_borrower::*;
+pub use create_staking_vault::*;
 pub use debarr_borrower::*;
 pub use edit_initialize::*;
 pub use initialize::*;

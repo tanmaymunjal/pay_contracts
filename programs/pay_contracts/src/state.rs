@@ -11,6 +11,19 @@ pub enum EpochTime {
     NinetyDays,
 }
 
+impl From<EpochTime> for u64 {
+    fn from(value: EpochTime) -> Self {
+        match value {
+            EpochTime::FifteenDays => 15,
+            EpochTime::ThirtyDays => 30,
+            EpochTime::FourtyFiveDays => 45,
+            EpochTime::SixtyDays => 60,
+            EpochTime::SeventyFiveDays => 75,
+            EpochTime::NinetyDays => 90,
+        }
+    }
+}
+
 #[account]
 #[derive(InitSpace)]
 pub struct InitializeAccount {
@@ -37,15 +50,6 @@ pub struct Borrower {
 
 #[account]
 #[derive(InitSpace)]
-pub struct StakingVault {
-    pub bump: u8,
-    pub total_stake: u64,
-    pub epoch_start: i64,
-    pub epoch_time: EpochTime,
-}
-
-#[account]
-#[derive(InitSpace)]
 pub struct BorrowAppl {
     pub bump: u8,
     #[max_len(100)]
@@ -53,6 +57,30 @@ pub struct BorrowAppl {
     pub borrower: Pubkey,
     pub request_amount: u64,
     pub approved_amount: u64,
+    pub used_amount: u64,
     #[max_len(100)]
     pub metadata: String,
+}
+
+#[account]
+#[derive(InitSpace)]
+pub struct StakingCenter {
+    pub bump: u8,
+    pub fifteen_day_expiry: Option<i64>,
+    pub thirty_day_expiry: Option<i64>,
+    pub fourty_five_day_expiry: Option<i64>,
+    pub sixty_day_expiry: Option<i64>,
+    pub seventy_five_day_expiry: Option<i64>,
+    pub ninety_day_expiry: Option<i64>,
+}
+
+#[account]
+#[derive(InitSpace)]
+pub struct StakingVault {
+    pub bump: u8,
+    #[max_len(100)]
+    pub seed: String,
+    pub total_stake: u64,
+    pub epoch_start: i64,
+    pub epoch_time: EpochTime,
 }
