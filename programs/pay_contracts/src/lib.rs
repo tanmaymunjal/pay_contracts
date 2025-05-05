@@ -71,7 +71,11 @@ pub mod pay_contracts {
         unstake_staking_vault::handler(ctx)
     }
 
-    pub fn pay_money(ctx: Context<PayMoney>, req: Box<state::PayMoneyDist>) -> Result<()>{
+    pub fn pay_money(ctx: Context<PayMoney>, req: Box<state::PayMoneyDist>) -> Result<()> {
         pay_money::handler(ctx, req)
+    }
+
+    pub fn pay_back_money(ctx: Context<PayBackMoney>, returned: u64, interest: u64) -> Result<()> {
+        pay_back_money::handler(ctx, returned, interest)
     }
 }

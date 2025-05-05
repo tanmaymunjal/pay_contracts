@@ -73,3 +73,10 @@ pub struct MoneyUsed {
     pub borrow_appl: Pubkey,
     pub money_dist: PayMoneyDist,
 }
+
+#[event]
+pub struct MoneyPaidBack {
+    pub borrow_appl: Pubkey,
+    pub returned: u64,
+    pub interest: u64,
+}

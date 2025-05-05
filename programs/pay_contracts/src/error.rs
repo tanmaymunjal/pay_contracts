@@ -33,4 +33,8 @@ pub enum PayContractsError {
     // 6007
     #[msg("Epoch not selected correctly/invalid input")]
     InvalidEpochInput,
+
+    // 6008
+    #[msg("Can not return more than used")]
+    CanNotReturnMoreThanUsed,
 }
