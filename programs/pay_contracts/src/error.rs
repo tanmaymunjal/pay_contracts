@@ -9,4 +9,8 @@ pub enum PayContractsError {
     // 6001
     #[msg("Approval can not be higher than requested amount")]
     ApprovalAmountTooHigh,
+
+    // 6002
+    #[msg("Epoch for this staking vault already started")]
+    EpochAlreadyStarted,
 }

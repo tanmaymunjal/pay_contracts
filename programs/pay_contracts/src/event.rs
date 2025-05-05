@@ -52,3 +52,10 @@ pub struct StakingVaultCreated {
     pub epoch_start: i64,
     pub epoch_time: EpochTime,
 }
+
+#[event]
+pub struct StakeStakingEvent {
+    pub staker: Pubkey,
+    pub staking_vault: Pubkey,
+    pub stake_amount: u64,
+}

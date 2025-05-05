@@ -84,3 +84,11 @@ pub struct StakingVault {
     pub epoch_start: i64,
     pub epoch_time: EpochTime,
 }
+
+#[account]
+#[derive(InitSpace)]
+pub struct StakingVaultStake {
+    pub bump: u8,
+    pub staker: Pubkey,
+    pub stake_amount: u64,
+}

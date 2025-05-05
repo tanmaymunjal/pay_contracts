@@ -62,4 +62,8 @@ pub mod pay_contracts {
     ) -> Result<()> {
         create_staking_vault::handler(ctx, seed, epoch_time)
     }
+
+    pub fn stake_staking_vault(ctx: Context<StakeStakingVault>, stake_amount: u64) -> Result<()> {
+        stake_staking_vault::handler(ctx, stake_amount)
+    }
 }

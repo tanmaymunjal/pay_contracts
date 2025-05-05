@@ -9,3 +9,5 @@ pub const MINUTE: i64 = 60;
 pub const HOUR: i64 = 60 * MINUTE;
 #[constant]
 pub const DAY: i64 = 24 * HOUR;
+#[constant]
+pub const USDC_DECIMALS: u8 = 6;

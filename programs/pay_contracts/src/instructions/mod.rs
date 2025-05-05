@@ -6,6 +6,7 @@ pub mod create_staking_vault;
 pub mod debarr_borrower;
 pub mod edit_initialize;
 pub mod initialize;
+pub mod stake_staking_vault;
 
 pub use approve_appl::*;
 pub use borrow_appl::*;
@@ -15,3 +16,4 @@ pub use create_staking_vault::*;
 pub use debarr_borrower::*;
 pub use edit_initialize::*;
 pub use initialize::*;
+pub use stake_staking_vault::*;
