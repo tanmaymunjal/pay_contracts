@@ -47,6 +47,7 @@ pub fn handler(
     staking_vault.bump = ctx.bumps.staking_vault;
     staking_vault.seed = seed;
     staking_vault.total_stake = 0;
+    staking_vault.total_available = 0;
     staking_vault.epoch_time = epoch_time;
 
     // Get the current expiry value for this epoch type

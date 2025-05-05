@@ -59,3 +59,11 @@ pub struct StakeStakingEvent {
     pub staking_vault: Pubkey,
     pub stake_amount: u64,
 }
+
+#[event]
+pub struct UnstakingEvenet {
+    pub staker: Pubkey,
+    pub staking_vault: Pubkey,
+    pub staked_amount: u64,
+    pub unstaked_amount: u64,
+}

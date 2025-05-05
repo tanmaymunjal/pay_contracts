@@ -66,4 +66,8 @@ pub mod pay_contracts {
     pub fn stake_staking_vault(ctx: Context<StakeStakingVault>, stake_amount: u64) -> Result<()> {
         stake_staking_vault::handler(ctx, stake_amount)
     }
+
+    pub fn unstake_staking_vault(ctx: Context<UnStakeStakingVault>) -> Result<()> {
+        unstake_staking_vault::handler(ctx)
+    }
 }

@@ -81,6 +81,7 @@ pub struct StakingVault {
     #[max_len(100)]
     pub seed: String,
     pub total_stake: u64,
+    pub total_available: u64,
     pub epoch_start: i64,
     pub epoch_time: EpochTime,
 }

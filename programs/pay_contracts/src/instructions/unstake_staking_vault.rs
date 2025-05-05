@@ -1,6 +1,6 @@
-use crate::constants::USDC_DECIMALS;
+use crate::constants::{DAY, USDC_DECIMALS};
 use crate::error::PayContractsError;
-use crate::event::StakeStakingEvent;
+use crate::event::UnstakingEvenet;
 use crate::state::{StakingVault, StakingVaultStake, TreasuryAccount};
 use anchor_lang::prelude::*;
 use anchor_spl::{
@@ -10,7 +10,7 @@ use anchor_spl::{
 };
 
 #[derive(Accounts)]
-pub struct StakeStakingVault<'info> {
+pub struct UnStakeStakingVault<'info> {
     #[account(mut)]
     pub staker: Signer<'info>,
     #[account(
@@ -23,6 +23,7 @@ pub struct StakeStakingVault<'info> {
     #[account(mut)]
     pub staking_vault: Account<'info, StakingVault>,
     #[account(
+        mut,
         seeds = [
             b"treasury"
         ],
@@ -37,15 +38,14 @@ pub struct StakeStakingVault<'info> {
     )]
     pub treasury_token_account: InterfaceAccount<'info, TokenAccount>,
     #[account(
-        init_if_needed,
-        payer = staker,
-        space = 8 + StakingVaultStake::INIT_SPACE,
+        mut,
+        close = staker,
         seeds = [
             b"staking",
             staker.key().as_ref(),
             staking_vault.key().as_ref()
         ],
-        bump
+        bump=stake_staking_vault.bump
     )]
     pub stake_staking_vault: Account<'info, StakingVaultStake>,
     #[account(address=USDC)]
@@ -55,8 +55,9 @@ pub struct StakeStakingVault<'info> {
     pub system_program: Program<'info, System>,
 }
 
-pub fn handler(ctx: Context<StakeStakingVault>, stake_amount: u64) -> Result<()> {
-    let staker = &mut ctx.accounts.staker;
+pub fn handler(ctx: Context<UnStakeStakingVault>) -> Result<()> {
+    let treasury_acc = &mut ctx.accounts.treasury_acc;
+    let staker = &ctx.accounts.staker;
     let staking_vault = &mut ctx.accounts.staking_vault;
     let stake_staking_vault = &mut ctx.accounts.stake_staking_vault;
     let staker_token_account = &mut ctx.accounts.staker_token_account;
@@ -64,35 +65,39 @@ pub fn handler(ctx: Context<StakeStakingVault>, stake_amount: u64) -> Result<()>
     let usdc_mint = &ctx.accounts.usdc_mint;
     let current_timestamp = Clock::get()?.unix_timestamp;
 
+    // Calculate the epoch duration in seconds based on epoch_time
+    let epoch_duration = u64::from(staking_vault.epoch_time) as i64 * DAY;
+    let epoch_end = staking_vault.epoch_start + epoch_duration;
+
     require!(
-        current_timestamp < staking_vault.epoch_start,
-        PayContractsError::EpochAlreadyStarted
+        current_timestamp > epoch_end,
+        PayContractsError::EpochNotEnded
     );
 
+    let transfer_amount = (stake_staking_vault.stake_amount * staking_vault.total_available)
+        / (staking_vault.total_stake);
+
+    let signer_seeds: &[&[&[u8]]] = &[&[b"treasury", &[treasury_acc.bump]]];
     transfer_checked(
-        CpiContext::new(
+        CpiContext::new_with_signer(
             ctx.accounts.token_program.to_account_info(),
             TransferChecked {
-                from: staker_token_account.to_account_info(),
-                to: treasury_token_account.to_account_info(),
-                authority: staker.to_account_info(),
+                from: treasury_token_account.to_account_info(),
+                to: staker_token_account.to_account_info(),
+                authority: treasury_acc.to_account_info(),
                 mint: usdc_mint.to_account_info(),
             },
+            signer_seeds,
         ),
-        stake_amount,
+        transfer_amount,
         USDC_DECIMALS,
     )?;
 
-    stake_staking_vault.bump = ctx.bumps.stake_staking_vault;
-    stake_staking_vault.staker = staker.key();
-    stake_staking_vault.stake_amount += stake_amount;
-    staking_vault.total_stake += stake_amount;
-    staking_vault.total_available += stake_amount;
-
-    emit!(StakeStakingEvent {
+    emit!(UnstakingEvenet {
         staker: staker.key(),
-        staking_vault: stake_staking_vault.key(),
-        stake_amount: stake_amount
+        staking_vault: staking_vault.key(),
+        staked_amount: stake_staking_vault.stake_amount,
+        unstaked_amount: transfer_amount
     });
 
     Ok(())

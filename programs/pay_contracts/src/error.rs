@@ -13,4 +13,8 @@ pub enum PayContractsError {
     // 6002
     #[msg("Epoch for this staking vault already started")]
     EpochAlreadyStarted,
+
+    // 6003
+    #[msg("Epoch has not ended yet")]
+    EpochNotEnded,
 }
