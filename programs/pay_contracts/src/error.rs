@@ -37,4 +37,8 @@ pub enum PayContractsError {
     // 6008
     #[msg("Can not return more than used")]
     CanNotReturnMoreThanUsed,
+
+    // 6009
+    #[msg("Can not allocate more than available amount")]
+    NotEnoughAllocatableFunds,
 }

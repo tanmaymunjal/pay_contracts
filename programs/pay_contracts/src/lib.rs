@@ -78,4 +78,11 @@ pub mod pay_contracts {
     pub fn pay_back_money(ctx: Context<PayBackMoney>, returned: u64, interest: u64) -> Result<()> {
         pay_back_money::handler(ctx, returned, interest)
     }
+
+    pub fn allocate_back_money(
+        ctx: Context<AllocateBackMoney>,
+        req: Box<state::PayMoneyDist>,
+    ) -> Result<()> {
+        allocate_back_money::handler(ctx, req)
+    }
 }

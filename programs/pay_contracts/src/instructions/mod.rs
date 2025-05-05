@@ -1,3 +1,4 @@
+pub mod allocate_back_money;
 pub mod approve_appl;
 pub mod borrow_appl;
 pub mod collections_borrower;
@@ -11,6 +12,7 @@ pub mod pay_money;
 pub mod stake_staking_vault;
 pub mod unstake_staking_vault;
 
+pub use allocate_back_money::*;
 pub use approve_appl::*;
 pub use borrow_appl::*;
 pub use collections_borrower::*;

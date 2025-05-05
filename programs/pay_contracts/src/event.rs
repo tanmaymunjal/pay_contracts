@@ -80,3 +80,8 @@ pub struct MoneyPaidBack {
     pub returned: u64,
     pub interest: u64,
 }
+
+#[event]
+pub struct AllocateBackMoneyEvent {
+    pub allocate_dist: PayMoneyDist,
+}
