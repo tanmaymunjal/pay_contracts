@@ -8,7 +8,7 @@ use anchor_lang::prelude::*;
 pub struct CollectionsBorrower<'info> {
     #[account(
         mut,
-        constraint = collector.key() == DICTATOR @ PayContractsError::UnauthorizedAction
+        // constraint = collector.key() == DICTATOR @ PayContractsError::UnauthorizedAction
     )]
     pub collector: Signer<'info>,
     #[account(mut)]

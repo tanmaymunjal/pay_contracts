@@ -104,7 +104,7 @@ describe("pay_contracts", () => {
       .accounts({ borrowerSigner: borrowerSigner.publicKey })
       .signers([borrowerSigner])
       .rpc(rpcConfig);
-      global["borrowerSigner"] = borrowerSigner;
+    global["borrowerSigner"] = borrowerSigner;
   });
 
   it("Edit initialize", async () => {
@@ -132,8 +132,8 @@ describe("pay_contracts", () => {
   });
   it("Appprove Appl", async () => {
     let [borrowerAcc] = await get_pda_from_seeds([
-        Buffer.from("borrower"),
-        global["borrowerSigner"].publicKey.toBuffer()
+      Buffer.from("borrower"),
+      global["borrowerSigner"].publicKey.toBuffer(),
     ]);
 
     let [borrowAppl] = await get_pda_from_seeds([
@@ -148,6 +148,35 @@ describe("pay_contracts", () => {
         lendingAgent: global["botPublicKey"],
       })
       .signers([global["bot"]])
+      .rpc(rpcConfig);
+    global["borrowerAcc"] = borrowerAcc;
+  });
+  it("Debarr borrower", async () => {
+    await program.methods
+      .debarrBorrower(true)
+      .accounts({
+        debarrer: global["initializeSigner"].publicKey,
+        borrowerAcc: global["borrowerAcc"],
+      })
+      .signers([global["initializeSigner"]])
+      .rpc(rpcConfig);
+  });
+  it("Collections borrower", async () => {
+    await program.methods
+      .collectionsBorrower(true)
+      .accounts({
+        collector: global["initializeSigner"].publicKey,
+        borrowerAcc: global["borrowerAcc"],
+      })
+      .signers([global["initializeSigner"]])
+      .rpc(rpcConfig);
+  });
+  it("Create staking vault", async () => {
+    const fiften_days = { fifteenDays: {} };
+    await program.methods
+      .createStakingVault("1234", fiften_days)
+      .accounts({ initializer: global["initializeSigner"].publicKey })
+      .signers([global["initializeSigner"]])
       .rpc(rpcConfig);
   });
 });
