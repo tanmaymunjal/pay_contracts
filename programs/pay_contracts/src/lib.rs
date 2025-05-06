@@ -55,6 +55,12 @@ pub mod pay_contracts {
         borrow_appl::handler(ctx, appl_id, request_amount, metadata)
     }
 
+    pub fn approve_appl(
+        ctx: Context<ApproveBorrowApl>, approved_amount: u64
+    ) -> Result<()>{
+        approve_appl::handler(ctx, approved_amount)
+    }
+
     pub fn create_staking_vault(
         ctx: Context<CreateStakingVault>,
         seed: String,

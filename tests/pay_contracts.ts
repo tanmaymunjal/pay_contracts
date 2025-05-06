@@ -1,7 +1,6 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { PayContracts } from "../target/types/pay_contracts";
-import { PublicKey } from "@solana/web3.js";
 import {
   createMint,
   mintTo,
@@ -21,12 +20,7 @@ describe("pay_contracts", () => {
     provider: { connection },
   } = program;
 
-  const botPublicKey = new PublicKey(
-    "55kBY9yxqSC42boV8PywT2gqGzgLi5MPAtifNRgPNezF"
-  );
-
   let global = {};
-  global["botPublicKey"] = botPublicKey;
 
   async function create_keypair() {
     const keypair = web3.Keypair.generate();
@@ -43,9 +37,16 @@ describe("pay_contracts", () => {
     return keypair;
   }
 
+  async function get_pda_from_seeds(seeds) {
+    return web3.PublicKey.findProgramAddressSync(seeds, program.programId);
+  }
+
   it("Is initialized!", async () => {
     // Add your test here.
     const initializeSigner = await create_keypair();
+    const bot = await create_keypair();
+    global["bot"] = bot;
+    global["botPublicKey"] = bot.publicKey;
 
     const mintAddress = await createMint(
       connection,
@@ -119,12 +120,32 @@ describe("pay_contracts", () => {
   it("Send borrow apppl", async () => {
     await program.methods
       .borrowAppl(
-        "12344",
+        "1234",
         new anchor.BN(10000),
         "https://www.google.com/search?q=monkey&oq=monkey&gs_lcrp="
       )
-      .accounts({borrowerSigner: global["initializeSigner"].publicKey})
+      .accounts({ borrowerSigner: global["initializeSigner"].publicKey })
       .signers([global["initializeSigner"]])
+      .rpc(rpcConfig);
+  });
+  it("Appprove Appl", async () => {
+    let [borrowerAcc] = await get_pda_from_seeds([
+        Buffer.from("borrower"),
+        global["initializeSigner"].publicKey.toBuffer()
+    ]);
+
+    let [borrowAppl] = await get_pda_from_seeds([
+      Buffer.from("borrower_appl"),
+      borrowerAcc.toBuffer(),
+      Buffer.from("1234"),
+    ]);
+    await program.methods
+      .approveAppl(new anchor.BN(9000))
+      .accounts({
+        borrowAppl: borrowAppl,
+        lendingAgent: global["botPublicKey"],
+      })
+      .signers([global["bot"]])
       .rpc(rpcConfig);
   });
 });
