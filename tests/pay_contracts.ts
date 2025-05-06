@@ -8,6 +8,7 @@ import {
   TOKEN_2022_PROGRAM_ID,
 } from "@solana/spl-token";
 import { rpcConfig } from "./test_config";
+import { rpc } from "@coral-xyz/anchor/dist/cjs/utils";
 
 describe("pay_contracts", () => {
   // Configure the client to use the local cluster.
@@ -125,7 +126,6 @@ describe("pay_contracts", () => {
       undefined,
       TOKEN_2022_PROGRAM_ID
     );
-
 
     await program.methods
       .createBorrower()
@@ -256,9 +256,40 @@ describe("pay_contracts", () => {
         borrowerSigner: global["borrowerSigner"].publicKey,
         borrowAppl: global["borrowAppl"],
         usdcMint: global["mintAddress"],
-        tokenProgram: TOKEN_2022_PROGRAM_ID
+        tokenProgram: TOKEN_2022_PROGRAM_ID,
       })
       .signers([global["bot"], global["borrowerSigner"]])
-      .rpc();
+      .rpc(rpcConfig);
+  });
+  it("Allocate back money", async () => {
+    const instance = {
+      req: [{ epoch: { fifteenDays: {} }, amount: new anchor.BN(100) }],
+    };
+    await program.methods
+      .allocateBackMoney(instance)
+      .accounts({
+        fraudAgent: global["botPublicKey"],
+        fifteenStakingVault: global["stakingVault"],
+        thirtyStakingVault: null,
+        fortyFiveStakingVault: null,
+        sixtyStakingVault: null,
+        seventyFiveStakingVault: null,
+        ninetyStakingVault: null,
+      })
+      .signers([global["bot"]])
+      .rpc(rpcConfig);
+  });
+  it("Unstake Staking Vault", async () => {
+    await sleep(75000);
+    await program.methods
+      .unstakeStakingVault()
+      .accounts({
+        staker: global["initializeSigner"].publicKey,
+        stakingVault: global["stakingVault"],
+        tokenProgram: TOKEN_2022_PROGRAM_ID,
+        usdcMint: global["mintAddress"],
+      })
+      .signers([global["initializeSigner"]])
+      .rpc(rpcConfig);
   });
 });

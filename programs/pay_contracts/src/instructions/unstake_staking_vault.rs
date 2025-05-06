@@ -17,7 +17,7 @@ pub struct UnStakeStakingVault<'info> {
         mut,
         associated_token::mint = usdc_mint,
         associated_token::authority = staker,
-        token::token_program = token_program,
+        associated_token::token_program = token_program,
     )]
     pub staker_token_account: InterfaceAccount<'info, TokenAccount>,
     #[account(mut)]
@@ -34,7 +34,7 @@ pub struct UnStakeStakingVault<'info> {
         mut,
         associated_token::mint = usdc_mint,
         associated_token::authority = treasury_acc,
-        token::token_program = token_program,
+        associated_token::token_program = token_program,
     )]
     pub treasury_token_account: InterfaceAccount<'info, TokenAccount>,
     #[account(
@@ -48,7 +48,7 @@ pub struct UnStakeStakingVault<'info> {
         bump=stake_staking_vault.bump
     )]
     pub stake_staking_vault: Account<'info, StakingVaultStake>,
-    #[account(address=USDC)]
+    // #[account(address=USDC)]
     pub usdc_mint: InterfaceAccount<'info, Mint>,
     pub token_program: Interface<'info, TokenInterface>,
     pub associated_token_program: Program<'info, AssociatedToken>,
