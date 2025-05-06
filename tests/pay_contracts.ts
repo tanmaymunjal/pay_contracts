@@ -81,6 +81,11 @@ describe("pay_contracts", () => {
     
     const tx = await program.methods.initialize(global["botPublicKey"], global["botPublicKey"], global["botPublicKey"])
     .accounts({initializer: initializeSigner.publicKey,tokenProgram: TOKEN_2022_PROGRAM_ID, usdcMint: mintAddress}).signers([initializeSigner]).rpc(rpcConfig);
+    global["initializeSigner"] = initializeSigner;
     console.log("Your transaction signature", tx);
   });
+
+  it("Create borrower!", async () => {
+    await program.methods.createBorrower().accounts({borrowerSigner: global["initializeSigner"].publicKey}).signers([global["initializeSigner"]]).rpc();
+  })
 });
