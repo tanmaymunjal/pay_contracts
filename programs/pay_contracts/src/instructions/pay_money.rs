@@ -24,7 +24,7 @@ pub struct PayMoney<'info> {
         payer = card_agent,
         associated_token::mint = usdc_mint,
         associated_token::authority = card_agent,
-        token::token_program = token_program,
+        associated_token::token_program = token_program,
     )]
     pub card_agent_token_account: InterfaceAccount<'info, TokenAccount>,
 
@@ -42,7 +42,7 @@ pub struct PayMoney<'info> {
         mut,
         associated_token::mint = usdc_mint,
         associated_token::authority = treasury_acc,
-        token::token_program = token_program,
+        associated_token::token_program = token_program,
     )]
     pub treasury_token_account: InterfaceAccount<'info, TokenAccount>,
 
@@ -71,7 +71,7 @@ pub struct PayMoney<'info> {
     #[account(mut)]
     pub ninety_staking_vault: Option<Box<Account<'info, StakingVault>>>,
 
-    #[account(address = USDC)]
+    // #[account(address = USDC)]
     pub usdc_mint: InterfaceAccount<'info, Mint>,
 
     pub token_program: Interface<'info, TokenInterface>,

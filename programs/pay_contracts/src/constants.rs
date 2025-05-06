@@ -6,7 +6,9 @@ pub const DICTATOR: Pubkey = pubkey!("55kBY9yxqSC42boV8PywT2gqGzgLi5MPAtifNRgPNe
 pub const MINUTE: i64 = 60;
 #[constant]
 pub const HOUR: i64 = 60 * MINUTE;
+// #[constant]
+// pub const DAY: i64 = 24 * HOUR;
 #[constant]
-pub const DAY: i64 = 24 * HOUR;
+pub const DAY: i64 = 5;
 #[constant]
 pub const USDC_DECIMALS: u8 = 6;

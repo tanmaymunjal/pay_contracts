@@ -41,6 +41,10 @@ describe("pay_contracts", () => {
     return web3.PublicKey.findProgramAddressSync(seeds, program.programId);
   }
 
+  async function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   it("Is initialized!", async () => {
     // Add your test here.
     const initializeSigner = await create_keypair();
@@ -151,6 +155,7 @@ describe("pay_contracts", () => {
       .signers([global["bot"]])
       .rpc(rpcConfig);
     global["borrowerAcc"] = borrowerAcc;
+    global["borrowAppl"] = borrowAppl;
   });
   it("Debarr borrower", async () => {
     await program.methods
@@ -191,9 +196,33 @@ describe("pay_contracts", () => {
         staker: global["initializeSigner"].publicKey,
         stakingVault: stakingVault,
         tokenProgram: TOKEN_2022_PROGRAM_ID,
-        usdcMint: global["mintAddress"]
+        usdcMint: global["mintAddress"],
       })
       .signers([global["initializeSigner"]])
       .rpc(rpcConfig);
+    global["stakingVault"] = stakingVault;
+  });
+  it("Pay money", async () => {
+    await sleep(5000);
+    const instance = {
+      req: [{ epoch: { fifteenDays: {} }, amount: new anchor.BN(99) }],
+    };
+    await program.methods
+      .payMoney(instance)
+      .accounts({
+        fraudAgent: global["botPublicKey"],
+        cardAgent: global["botPublicKey"],
+        borrowAppl: global["borrowAppl"],
+        fifteenStakingVault: global["stakingVault"],
+        thirtyStakingVault: null,
+        fortyFiveStakingVault: null,
+        sixtyStakingVault: null,
+        seventyFiveStakingVault: null,
+        ninetyStakingVault: null,
+        tokenProgram: TOKEN_2022_PROGRAM_ID,
+        usdcMint: global["mintAddress"]
+      })
+      .signers([global["bot"]])
+      .rpc();
   });
 });
