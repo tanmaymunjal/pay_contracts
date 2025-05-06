@@ -19,7 +19,7 @@ pub struct PayBackMoney<'info> {
         mut,
         associated_token::mint = usdc_mint,
         associated_token::authority = borrower_signer,
-        token::token_program = token_program,
+        associated_token::token_program = token_program,
     )]
     pub borrower_token_account: InterfaceAccount<'info, TokenAccount>,
     #[account(
@@ -52,7 +52,7 @@ pub struct PayBackMoney<'info> {
         mut,
         associated_token::mint = usdc_mint,
         associated_token::authority = treasury_acc,
-        token::token_program = token_program,
+        associated_token::token_program = token_program,
     )]
     pub treasury_token_account: InterfaceAccount<'info, TokenAccount>,
 
@@ -62,7 +62,7 @@ pub struct PayBackMoney<'info> {
     )]
     pub initialize_acc: Account<'info, InitializeAccount>,
 
-    #[account(address = USDC)]
+    // #[account(address = USDC)]
     pub usdc_mint: InterfaceAccount<'info, Mint>,
 
     pub token_program: Interface<'info, TokenInterface>,

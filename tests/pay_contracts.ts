@@ -104,6 +104,29 @@ describe("pay_contracts", () => {
 
   it("Create borrower!", async () => {
     const borrowerSigner = await create_keypair();
+
+    const signerTokenAddr = await createAssociatedTokenAccount(
+      connection,
+      borrowerSigner,
+      global["mintAddress"],
+      borrowerSigner.publicKey,
+      undefined,
+      TOKEN_2022_PROGRAM_ID
+    );
+
+    await mintTo(
+      connection,
+      borrowerSigner,
+      global["mintAddress"],
+      signerTokenAddr,
+      global["initializeSigner"],
+      30 * Math.pow(10, 12),
+      undefined,
+      undefined,
+      TOKEN_2022_PROGRAM_ID
+    );
+
+
     await program.methods
       .createBorrower()
       .accounts({ borrowerSigner: borrowerSigner.publicKey })
@@ -220,9 +243,22 @@ describe("pay_contracts", () => {
         seventyFiveStakingVault: null,
         ninetyStakingVault: null,
         tokenProgram: TOKEN_2022_PROGRAM_ID,
-        usdcMint: global["mintAddress"]
+        usdcMint: global["mintAddress"],
       })
       .signers([global["bot"]])
+      .rpc(rpcConfig);
+  });
+  it("Pay back money", async () => {
+    await program.methods
+      .payBackMoney(new anchor.BN(99), new anchor.BN(1))
+      .accountsPartial({
+        fraudAgent: global["botPublicKey"],
+        borrowerSigner: global["borrowerSigner"].publicKey,
+        borrowAppl: global["borrowAppl"],
+        usdcMint: global["mintAddress"],
+        tokenProgram: TOKEN_2022_PROGRAM_ID
+      })
+      .signers([global["bot"], global["borrowerSigner"]])
       .rpc();
   });
 });
