@@ -98,11 +98,13 @@ describe("pay_contracts", () => {
   });
 
   it("Create borrower!", async () => {
+    const borrowerSigner = await create_keypair();
     await program.methods
       .createBorrower()
-      .accounts({ borrowerSigner: global["initializeSigner"].publicKey })
-      .signers([global["initializeSigner"]])
+      .accounts({ borrowerSigner: borrowerSigner.publicKey })
+      .signers([borrowerSigner])
       .rpc(rpcConfig);
+      global["borrowerSigner"] = borrowerSigner;
   });
 
   it("Edit initialize", async () => {
@@ -124,14 +126,14 @@ describe("pay_contracts", () => {
         new anchor.BN(10000),
         "https://www.google.com/search?q=monkey&oq=monkey&gs_lcrp="
       )
-      .accounts({ borrowerSigner: global["initializeSigner"].publicKey })
-      .signers([global["initializeSigner"]])
+      .accounts({ borrowerSigner: global["borrowerSigner"].publicKey })
+      .signers([global["borrowerSigner"]])
       .rpc(rpcConfig);
   });
   it("Appprove Appl", async () => {
     let [borrowerAcc] = await get_pda_from_seeds([
         Buffer.from("borrower"),
-        global["initializeSigner"].publicKey.toBuffer()
+        global["borrowerSigner"].publicKey.toBuffer()
     ]);
 
     let [borrowAppl] = await get_pda_from_seeds([
