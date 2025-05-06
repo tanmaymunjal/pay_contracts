@@ -25,7 +25,7 @@ describe("pay_contracts", () => {
     "55kBY9yxqSC42boV8PywT2gqGzgLi5MPAtifNRgPNezF"
   );
 
-  let global= {}
+  let global = {};
   global["botPublicKey"] = botPublicKey;
 
   async function create_keypair() {
@@ -42,54 +42,89 @@ describe("pay_contracts", () => {
     );
     return keypair;
   }
-  
-  it("Is initialized!", async () => {
-        // Add your test here.
-        const initializeSigner = await create_keypair();
 
-        const mintAddress = await createMint(
-          connection,
-          initializeSigner,
-          initializeSigner.publicKey,
-          initializeSigner.publicKey,
-          6,
-          undefined,
-          undefined,
-          TOKEN_2022_PROGRAM_ID
-        );
-    
-        const signerTokenAddr = await createAssociatedTokenAccount(
-          connection,
-          initializeSigner,
-          mintAddress,
-          initializeSigner.publicKey,
-          undefined,
-          TOKEN_2022_PROGRAM_ID
-        );
-    
-        await mintTo(
-          connection,
-          initializeSigner,
-          mintAddress,
-          signerTokenAddr,
-          initializeSigner,
-          30 * Math.pow(10, 12),
-          undefined,
-          undefined,
-          TOKEN_2022_PROGRAM_ID
-        );
-    
-    const tx = await program.methods.initialize(global["botPublicKey"], global["botPublicKey"], global["botPublicKey"])
-    .accounts({initializer: initializeSigner.publicKey,tokenProgram: TOKEN_2022_PROGRAM_ID, usdcMint: mintAddress}).signers([initializeSigner]).rpc(rpcConfig);
+  it("Is initialized!", async () => {
+    // Add your test here.
+    const initializeSigner = await create_keypair();
+
+    const mintAddress = await createMint(
+      connection,
+      initializeSigner,
+      initializeSigner.publicKey,
+      initializeSigner.publicKey,
+      6,
+      undefined,
+      undefined,
+      TOKEN_2022_PROGRAM_ID
+    );
+
+    const signerTokenAddr = await createAssociatedTokenAccount(
+      connection,
+      initializeSigner,
+      mintAddress,
+      initializeSigner.publicKey,
+      undefined,
+      TOKEN_2022_PROGRAM_ID
+    );
+
+    await mintTo(
+      connection,
+      initializeSigner,
+      mintAddress,
+      signerTokenAddr,
+      initializeSigner,
+      30 * Math.pow(10, 12),
+      undefined,
+      undefined,
+      TOKEN_2022_PROGRAM_ID
+    );
+
+    const tx = await program.methods
+      .initialize(
+        global["botPublicKey"],
+        global["botPublicKey"],
+        global["botPublicKey"]
+      )
+      .accounts({
+        initializer: initializeSigner.publicKey,
+        tokenProgram: TOKEN_2022_PROGRAM_ID,
+        usdcMint: mintAddress,
+      })
+      .signers([initializeSigner])
+      .rpc(rpcConfig);
     global["initializeSigner"] = initializeSigner;
     console.log("Your transaction signature", tx);
   });
 
   it("Create borrower!", async () => {
-    await program.methods.createBorrower().accounts({borrowerSigner: global["initializeSigner"].publicKey}).signers([global["initializeSigner"]]).rpc(rpcConfig);
+    await program.methods
+      .createBorrower()
+      .accounts({ borrowerSigner: global["initializeSigner"].publicKey })
+      .signers([global["initializeSigner"]])
+      .rpc(rpcConfig);
   });
 
   it("Edit initialize", async () => {
-    await program.methods.editInitialize(global["botPublicKey"], global["botPublicKey"], global["botPublicKey"]).accounts({editor: global["initializeSigner"].publicKey}).signers([global["initializeSigner"]]).rpc(rpcConfig);
-  })
+    await program.methods
+      .editInitialize(
+        global["botPublicKey"],
+        global["botPublicKey"],
+        global["botPublicKey"]
+      )
+      .accounts({ editor: global["initializeSigner"].publicKey })
+      .signers([global["initializeSigner"]])
+      .rpc(rpcConfig);
+  });
+
+  it("Send borrow apppl", async () => {
+    await program.methods
+      .borrowAppl(
+        "12344",
+        new anchor.BN(10000),
+        "https://www.google.com/search?q=monkey&oq=monkey&gs_lcrp="
+      )
+      .accounts({borrowerSigner: global["initializeSigner"].publicKey})
+      .signers([global["initializeSigner"]])
+      .rpc(rpcConfig);
+  });
 });
