@@ -94,6 +94,7 @@ describe("pay_contracts", () => {
       .signers([initializeSigner])
       .rpc(rpcConfig);
     global["initializeSigner"] = initializeSigner;
+    global["mintAddress"] = mintAddress;
     console.log("Your transaction signature", tx);
   });
 
@@ -176,6 +177,22 @@ describe("pay_contracts", () => {
     await program.methods
       .createStakingVault("1234", fiften_days)
       .accounts({ initializer: global["initializeSigner"].publicKey })
+      .signers([global["initializeSigner"]])
+      .rpc(rpcConfig);
+  });
+  it("Stake staking vault", async () => {
+    const [stakingVault] = await get_pda_from_seeds([
+      Buffer.from("staking_vault"),
+      Buffer.from("1234"),
+    ]);
+    await program.methods
+      .stakeStakingVault(new anchor.BN(1000))
+      .accounts({
+        staker: global["initializeSigner"].publicKey,
+        stakingVault: stakingVault,
+        tokenProgram: TOKEN_2022_PROGRAM_ID,
+        usdcMint: global["mintAddress"]
+      })
       .signers([global["initializeSigner"]])
       .rpc(rpcConfig);
   });
