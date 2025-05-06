@@ -7,7 +7,7 @@ pub mod event;
 pub mod instructions;
 pub mod state;
 
-declare_id!("7Xx22mzpbLwcHkSMELjW2UEFsy2EzMU9yAjjm7vvzmRg");
+declare_id!("2jfhJWJah5nbYynzzS97fGB4UVTrv7KpjLifqkHTXcVL");
 
 #[program]
 pub mod pay_contracts {
