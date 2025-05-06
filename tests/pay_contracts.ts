@@ -86,6 +86,10 @@ describe("pay_contracts", () => {
   });
 
   it("Create borrower!", async () => {
-    await program.methods.createBorrower().accounts({borrowerSigner: global["initializeSigner"].publicKey}).signers([global["initializeSigner"]]).rpc();
+    await program.methods.createBorrower().accounts({borrowerSigner: global["initializeSigner"].publicKey}).signers([global["initializeSigner"]]).rpc(rpcConfig);
+  });
+
+  it("Edit initialize", async () => {
+    await program.methods.editInitialize(global["botPublicKey"], global["botPublicKey"], global["botPublicKey"]).accounts({editor: global["initializeSigner"].publicKey}).signers([global["initializeSigner"]]).rpc(rpcConfig);
   })
 });
