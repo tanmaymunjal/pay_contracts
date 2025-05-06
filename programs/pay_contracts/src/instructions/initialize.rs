@@ -13,7 +13,7 @@ use anchor_spl::{
 pub struct InitializeContract<'info> {
     #[account(
         mut,
-        // constraint = initializer.key() == DICTATOR @ PayContractsError::UnauthorizedAction
+        constraint = initializer.key() == DICTATOR @ PayContractsError::UnauthorizedAction
     )]
     pub initializer: Signer<'info>,
     #[account(
@@ -54,7 +54,7 @@ pub struct InitializeContract<'info> {
         bump
     )]
     pub staking_center: Box<Account<'info, StakingCenter>>,
-    // #[account(address=USDC)]
+    #[account(address=USDC)]
     pub usdc_mint: Box<InterfaceAccount<'info, Mint>>,
     pub token_program: Interface<'info, TokenInterface>,
     pub associated_token_program: Program<'info, AssociatedToken>,

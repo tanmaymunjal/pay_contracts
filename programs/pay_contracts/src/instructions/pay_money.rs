@@ -71,7 +71,7 @@ pub struct PayMoney<'info> {
     #[account(mut)]
     pub ninety_staking_vault: Option<Box<Account<'info, StakingVault>>>,
 
-    // #[account(address = USDC)]
+    #[account(address = USDC)]
     pub usdc_mint: InterfaceAccount<'info, Mint>,
 
     pub token_program: Interface<'info, TokenInterface>,

@@ -8,7 +8,7 @@ use anchor_lang::prelude::*;
 pub struct EditContract<'info> {
     #[account(
         mut,
-        // constraint = editor.key() == DICTATOR @ PayContractsError::UnauthorizedAction
+        constraint = editor.key() == DICTATOR @ PayContractsError::UnauthorizedAction
     )]
     pub editor: Signer<'info>,
     #[account(

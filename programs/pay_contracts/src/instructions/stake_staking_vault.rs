@@ -48,7 +48,7 @@ pub struct StakeStakingVault<'info> {
         bump
     )]
     pub stake_staking_vault: Account<'info, StakingVaultStake>,
-    // #[account(address=USDC)]
+    #[account(address=USDC)]
     pub usdc_mint: InterfaceAccount<'info, Mint>,
     pub token_program: Interface<'info, TokenInterface>,
     pub associated_token_program: Program<'info, AssociatedToken>,

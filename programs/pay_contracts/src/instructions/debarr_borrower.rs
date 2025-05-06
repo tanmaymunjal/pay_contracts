@@ -8,7 +8,7 @@ use anchor_lang::prelude::*;
 pub struct DeBarrBorrower<'info> {
     #[account(
         mut,
-        // constraint = debarrer.key() == DICTATOR @ PayContractsError::UnauthorizedAction
+        constraint = debarrer.key() == DICTATOR @ PayContractsError::UnauthorizedAction
     )]
     pub debarrer: Signer<'info>,
     #[account(mut)]

@@ -62,7 +62,7 @@ pub struct PayBackMoney<'info> {
     )]
     pub initialize_acc: Account<'info, InitializeAccount>,
 
-    // #[account(address = USDC)]
+    #[account(address = USDC)]
     pub usdc_mint: InterfaceAccount<'info, Mint>,
 
     pub token_program: Interface<'info, TokenInterface>,
